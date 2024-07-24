@@ -18,6 +18,7 @@
 }
 
 body {
+  font-family: 'Instrument Sans', sans-serif;
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-color-light-grey));
   overflow-x: hidden;

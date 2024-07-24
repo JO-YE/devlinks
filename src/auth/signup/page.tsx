@@ -1,56 +1,6 @@
-"use client";
-
-import { redirect } from "next/navigation";
-import supabase from "@/lib/supabase";
-import { useState } from 'react';
 import Link from "next/link";
 
 export default function SignUp() {
-  const [data, setData] = useState<{
-    email: string,
-    password: string,
-    confirmPassword: string
-  }>({
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
-
-  const signUp = async (event: React.FormEvent) => {
-    event.preventDefault();
-    
-    if (data.password !== data.confirmPassword) {
-      console.log("Passwords do not match");
-      return;
-    }
-    
-    try {
-      const { data: signUpData, error } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-      });
-
-      if (signUpData) {
-        console.log(signUpData);
-        redirect('/login'); // Redirect to the login page after successful sign-up
-      }
-
-      if (error) {
-        console.log(error);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   return (
     <div className="flex flex-col w-[1440px] px-[482px] py-[206px] justify-center items-center">
       <div className="w-[476px] flex flex-row items-start justify-center py-0 pr-0 pl-px box-border max-w-full mb-[51px]">
@@ -72,7 +22,10 @@ export default function SignUp() {
         </div>
       </div>
 
-      <form onSubmit={signUp} className="self-stretch rounded-xl bg-white overflow-hidden flex flex-col items-start justify-start p-10 box-border gap-6 max-w-full">
+      <form
+        action="/auth/signup"
+        className="self-stretch rounded-xl bg-white overflow-hidden flex flex-col items-start justify-start p-10 box-border gap-6 max-w-full"
+      >
         <div className="self-stretch flex flex-col items-start justify-start pt-0 px-0 pb-4 gap-2">
           <h1 className="self-stretch relative font-body-m text-[#333333] text-left font-instrument text-2xl font-bold leading-[150%]">
             Create account
@@ -98,8 +51,6 @@ export default function SignUp() {
               placeholder="e.g. alex@email.com"
               type="text"
               name="email"
-              value={data.email}
-              onChange={handleChange}
             />
           </div>
         </div>
@@ -120,8 +71,6 @@ export default function SignUp() {
               placeholder="At least 8 characters"
               type="password"
               name="password"
-              value={data.password}
-              onChange={handleChange}
             />
           </div>
         </div>
@@ -142,8 +91,7 @@ export default function SignUp() {
               placeholder="At least 8 characters"
               type="password"
               name="confirmPassword"
-              value={data.confirmPassword}
-              onChange={handleChange}
+              
             />
           </div>
         </div>
@@ -160,7 +108,9 @@ export default function SignUp() {
         </button>
         <div className="self-stretch relative text-base leading-[150%] font-body-m text-center">
           <span className="text-[#737373]">{`Already have an account? `}</span>
-          <Link href='/login' className="pointer text-[#633CFF]">Login</Link>
+          <Link href="/login" className="pointer text-[#633CFF]">
+            Login
+          </Link>
         </div>
       </form>
     </div>

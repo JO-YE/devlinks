@@ -1,63 +1,19 @@
-// app/login/page.tsx or pages/login.tsx (depending on your file structure)
-"use client";
-
-import { redirect } from "next/navigation";
-import supabase from "@/lib/supabase";
 import Link from "next/link";
-import { useState } from 'react';
+import Image from 'next/image';
 
 export default function Login() {
-  const [data, setData] = useState<{
-    email: string,
-    password: string
-  }>({
-    email: '',
-    password: ''
-  });
-
-  const login = async (event: React.FormEvent) => {
-    event.preventDefault();
-    
-    try {
-      const { data: signInData, error } = await supabase.auth.signInWithPassword({
-        email: data.email,
-        password: data.password,
-      });
-
-      if (error) {
-        console.error('Login error:', error);
-        return;
-      }
-
-      if (signInData) {
-        console.log('Login successful:', signInData);
-        redirect('/'); // Use `redirect` for redirection
-      }
-    } catch (error) {
-      console.error('Error during login:', error);
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   return (
     <div className="flex flex-col w-[1440px] px-[482px] py-[206px] justify-center items-center">
       <div className="w-[476px] flex flex-row items-start justify-center py-0 pr-0 pl-px box-border max-w-full mb-[51px] ">
         <div className="w-[182.5px] flex flex-row items-start justify-start gap-[7.5px]">
-          <img
+          <Image
             className="h-10 w-10 relative overflow-hidden shrink-0"
             loading="lazy"
             alt=""
             src="/solarlinkcirclebold.svg"
           />
           <div className="flex-1 flex flex-col items-start justify-start pt-[6.3px] px-0 pb-0">
-            <img 
+            <img
               className="self-stretch h-[26.3px] relative max-w-full overflow-hidden shrink-0"
               loading="lazy"
               alt=""
@@ -66,7 +22,10 @@ export default function Login() {
           </div>
         </div>
       </div>
-      <form onSubmit={login} className="m-0 self-stretch rounded-xl bg-white overflow-hidden flex flex-col items-start justify-start p-10 box-border gap-[24px] max-w-full">
+      <form
+        action="/auth/login"
+        className="m-0 self-stretch rounded-xl bg-white overflow-hidden flex flex-col items-start justify-start p-10 box-border gap-[24px] max-w-full"
+      >
         <div className="self-stretch flex flex-col items-start justify-start pt-0 px-0 pb-4 gap-[8px]">
           <h1 className="m-0 self-stretch relative text-13xl leading-[150%] font-bold font-body-m text-dark-grey text-left">
             Login
@@ -92,10 +51,8 @@ export default function Login() {
               placeholder="e.g. alex@email.com"
               type="text"
               name="email"
-              value={data.email}
-              onChange={handleChange}
             />
-            <img
+            <Image
               className="h-1.5 w-3 relative hidden"
               alt=""
               src="/vector-1.svg"
@@ -119,8 +76,6 @@ export default function Login() {
               placeholder="Enter your password"
               type="password"
               name="password"
-              value={data.password}
-              onChange={handleChange}
             />
           </div>
         </div>
@@ -134,7 +89,9 @@ export default function Login() {
         </button>
         <div className="self-stretch relative text-base leading-[150%] font-body-m text-center">
           <span className="text-[#737373]">{`Don’t have an account? `}</span>
-          <Link href='/signup' className="pointer text-[#633CFF]">Create account</Link>
+          <Link href="/signup" className="pointer text-[#633CFF]">
+            Create account
+          </Link>
         </div>
       </form>
     </div>

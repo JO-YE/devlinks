@@ -1,9 +1,3 @@
-'use client';
-
 export default function Home() {
-  return (
-    <main className="">
-    Logged In
-    </main>
-  );
+  return <main className="">You are logged in here</main>;
 }

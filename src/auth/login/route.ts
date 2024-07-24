@@ -8,19 +8,16 @@ export async function POST(req: NextRequest) {
   const cookieStore = cookies();
 
   const formData = await req.formData();
-  const email = String(formData.get('email')); 
+  const email = String(formData.get('email'));
   const password = String(formData.get('password'));
 
   const supabase = createRouteHandlerClient({
     cookies: () => cookieStore
   });
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
-    password,
-    options: {
-      emailRedirectTo: `${url.origin}/auth/callback`,
-    }
+    password
   });
 
   if (error) {

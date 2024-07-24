@@ -1,7 +1,9 @@
+// app/login/page.tsx or pages/login.tsx (depending on your file structure)
 "use client";
 
-
-import { supabase } from "@/lib/supabase";
+import { redirect } from "next/navigation";
+import supabase from "@/lib/supabase";
+import Link from "next/link";
 import { useState } from 'react';
 
 export default function Login() {
@@ -11,24 +13,34 @@ export default function Login() {
   }>({
     email: '',
     password: ''
-  })
+  });
 
-  const login = async () => {
+  const login = async (event: React.FormEvent) => {
+    event.preventDefault();
+    
     try {
-      let { data, error } = await supabase.auth.signInWithPassword({
-        email: "someone@email.com",
-        password: "HEsNUJtHYehNIONHlyWZ",
+      const { data: signInData, error } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
       });
 
-      if (data) console.log(data);
+      if (error) {
+        console.error('Login error:', error);
+        return;
+      }
+
+      if (signInData) {
+        console.log('Login successful:', signInData);
+        redirect('/'); // Use `redirect` for redirection
+      }
     } catch (error) {
-      console.log(error);
+      console.error('Error during login:', error);
     }
   };
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setData((prev: any) => ({
+    setData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -39,22 +51,22 @@ export default function Login() {
       <div className="w-[476px] flex flex-row items-start justify-center py-0 pr-0 pl-px box-border max-w-full mb-[51px] ">
         <div className="w-[182.5px] flex flex-row items-start justify-start gap-[7.5px]">
           <img
-          className="h-10 w-10 relative overflow-hidden shrink-0"
-          loading="lazy"
-          alt=""
-          src="/solarlinkcirclebold.svg"
-          />
-        <div className="flex-1 flex flex-col items-start justify-start pt-[6.3px] px-0 pb-0">
-          <img 
-            className="self-stretch h-[26.3px] relative max-w-full overflow-hidden shrink-0"
+            className="h-10 w-10 relative overflow-hidden shrink-0"
             loading="lazy"
             alt=""
-            src="/devlinks.svg"
+            src="/solarlinkcirclebold.svg"
           />
+          <div className="flex-1 flex flex-col items-start justify-start pt-[6.3px] px-0 pb-0">
+            <img 
+              className="self-stretch h-[26.3px] relative max-w-full overflow-hidden shrink-0"
+              loading="lazy"
+              alt=""
+              src="/devlinks.svg"
+            />
+          </div>
         </div>
       </div>
-      </div>
-      <form className="m-0 self-stretch rounded-xl bg-white overflow-hidden flex flex-col items-start justify-start p-10 box-border gap-[24px] max-w-full">
+      <form onSubmit={login} className="m-0 self-stretch rounded-xl bg-white overflow-hidden flex flex-col items-start justify-start p-10 box-border gap-[24px] max-w-full">
         <div className="self-stretch flex flex-col items-start justify-start pt-0 px-0 pb-4 gap-[8px]">
           <h1 className="m-0 self-stretch relative text-13xl leading-[150%] font-bold font-body-m text-dark-grey text-left">
             Login
@@ -80,7 +92,7 @@ export default function Login() {
               placeholder="e.g. alex@email.com"
               type="text"
               name="email"
-              value={data?.email}
+              value={data.email}
               onChange={handleChange}
             />
             <img
@@ -107,19 +119,22 @@ export default function Login() {
               placeholder="Enter your password"
               type="password"
               name="password"
-              value={data?.password}
+              value={data.password}
               onChange={handleChange}
             />
           </div>
         </div>
-        <button className="cursor-pointer [border:none] py-[11px] px-5 bg-[#633CFF] self-stretch rounded-lg flex flex-row items-start justify-center hover:bg-mediumslateblue">
-          <div onClick={login} className="relative text-base leading-[150%] font-semibold font-body-m text-white text-left inline-block min-w-[43px]">
+        <button
+          type="submit"
+          className="cursor-pointer [border:none] py-[11px] px-5 bg-[#633CFF] self-stretch rounded-lg flex flex-row items-start justify-center hover:bg-mediumslateblue"
+        >
+          <div className="relative text-base leading-[150%] font-semibold font-body-m text-white text-left inline-block min-w-[43px]">
             Login
           </div>
         </button>
         <div className="self-stretch relative text-base leading-[150%] font-body-m text-center">
           <span className="text-[#737373]">{`Don’t have an account? `}</span>
-          <span className="pointer text-[#633CFF]">Create account</span>
+          <Link href='/signup' className="pointer text-[#633CFF]">Create account</Link>
         </div>
       </form>
     </div>

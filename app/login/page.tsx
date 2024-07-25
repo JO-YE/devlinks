@@ -1,5 +1,6 @@
 import Link from "next/link";
-import Image from 'next/image';
+import Image from "next/image";
+import { login } from "@/app/login/action";
 
 export default function Login() {
   return (
@@ -11,13 +12,17 @@ export default function Login() {
             loading="lazy"
             alt=""
             src="/solarlinkcirclebold.svg"
+            width={40}
+            height={40}
           />
           <div className="flex-1 flex flex-col items-start justify-start pt-[6.3px] px-0 pb-0">
-            <img
+            <Image
               className="self-stretch h-[26.3px] relative max-w-full overflow-hidden shrink-0"
               loading="lazy"
               alt=""
               src="/devlinks.svg"
+              width={40}
+              height={40}
             />
           </div>
         </div>
@@ -40,10 +45,12 @@ export default function Login() {
           </h3>
           <div className="self-stretch rounded-lg bg-white box-border overflow-hidden flex flex-row flex-wrap items-start justify-start py-2.5 px-[15px] gap-[12px] max-w-full border-[1px] border-solid border-borders">
             <div className="flex flex-col items-start justify-start pt-1 px-0 pb-0">
-              <img
+              <Image
                 className="w-4 h-4 relative overflow-hidden shrink-0"
                 alt=""
-                src="/phenvelopesimplefill.svg"
+                src="/envelope.svg"
+                width={40}
+                height={40}
               />
             </div>
             <input
@@ -55,7 +62,9 @@ export default function Login() {
             <Image
               className="h-1.5 w-3 relative hidden"
               alt=""
-              src="/vector-1.svg"
+              src="/lock.svg"
+              width={40}
+              height={40}
             />
           </div>
         </div>
@@ -65,10 +74,12 @@ export default function Login() {
           </h3>
           <div className="self-stretch rounded-lg bg-white overflow-hidden flex flex-row items-start justify-start py-2.5 px-4 gap-[12px] border-[1px] border-solid border-borders">
             <div className="flex flex-col items-start justify-start pt-1 px-0 pb-0">
-              <img
+              <Image
                 className="w-4 h-4 relative overflow-hidden shrink-0"
                 alt=""
-                src="/phlockkeyfill.svg"
+                src="/lock.svg"
+                width={40}
+                height={40}
               />
             </div>
             <input
@@ -80,6 +91,7 @@ export default function Login() {
           </div>
         </div>
         <button
+          formAction={login}
           type="submit"
           className="cursor-pointer [border:none] py-[11px] px-5 bg-[#633CFF] self-stretch rounded-lg flex flex-row items-start justify-center hover:bg-mediumslateblue"
         >
